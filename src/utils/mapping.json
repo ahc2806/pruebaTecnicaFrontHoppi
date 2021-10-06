@@ -1,0 +1,206 @@
+{
+  "strict": {
+    "text-font-family": "ProximaNova-Regular",
+
+    "text-heading-1-font-size": 44,
+    "text-heading-1-font-weight": "800",
+    "text-heading-1-font-family": "ProximaNova-Extrabold",
+
+    "text-heading-2-font-size": 40,
+    "text-heading-2-font-weight": "800",
+    "text-heading-2-font-family": "ProximaNova-Bold",
+
+    "text-heading-3-font-size": 36,
+    "text-heading-3-font-weight": "800",
+    "text-heading-3-font-family": "ProximaNova-Bold",
+
+    "text-heading-4-font-size": 32,
+    "text-heading-4-font-weight": "800",
+    "text-heading-4-font-family": "ProximaNova-Bold",
+
+    "text-subtitle-1-font-size": 18,
+    "text-subtitle-1-font-weight": "600",
+    "text-subtitle-1-font-family": "ProximaNova-Regular",
+
+    "text-subtitle-2-font-size": 16,
+    "text-subtitle-2-font-weight": "600",
+    "text-subtitle-2-font-family": "ProximaNova-Regular",
+
+    "text-paragraph-1-font-size": 18,
+    "text-paragraph-1-font-weight": "400",
+    "text-paragraph-1-font-family": "ProximaNova-Regular",
+
+    "text-caption-1-font-size": 14,
+    "text-caption-1-font-weight": "400",
+    "text-caption-1-font-family": "ProximaNova-Regular",
+
+    "text-label-font-size": 16,
+    "text-label-font-weight": "800",
+    "text-label-font-family": "ProximaNova-Bold"
+  },
+  "components": {
+    "Input": {
+      "meta": {
+        "variantGroups": {
+          "size": {
+            "medium": {
+              "default": false
+            },
+            "large": {
+              "default": true
+            }
+          }
+        }
+      },
+      "appearances": {
+        "default": {
+          "mapping": {},
+          "variantGroups": {
+            "status": {
+              "basic": {
+                "borderColor": "#C7C7C7",
+                "backgroundColor": "white"
+              }
+            },
+            "size": {
+              "large": {
+                "borderRadius": 15,
+                "minHeight": 50
+              }
+            }
+          }
+        }
+      }
+    },
+    "Button": {
+      "meta": {
+        "variantGroups": {
+          "size": {
+            "medium": {
+              "default": false
+            },
+            "giant": {
+              "default": true
+            }
+          }
+        }
+      },
+      "appearances": {
+        "filled": {
+          "variantGroups": {
+            "size": {
+              "giant": {
+                "borderRadius": 15,
+                "borderColor": "transparent",
+                "textFontWeight": "normal",
+                "minHeight": 50
+              }
+            },
+            "status": {
+              "primary": {
+                "borderColor": "transparent",
+                "state": {
+                  "active": {
+                    "borderColor": "transparent"
+                  }
+                }
+              },
+              "basic": {
+                "backgroundColor": "$color-purple-500",
+                "borderColor": "$color-purple-500",
+                "textColor": "white",
+                "iconTintColor": "$color-purple-800",
+                "state": {
+                  "focused": {
+                    "borderColor": "$color-purple-500",
+                    "backgroundColor": "$color-purple-400"
+                  },
+                  "hover": {
+                    "borderColor": "$color-purple-200",
+                    "backgroundColor": "$color-purple-200"
+                  },
+                  "active": {
+                    "borderColor": "$color-purple-600",
+                    "backgroundColor": "$color-purple-600"
+                  },
+                  "disabled": {
+                    "borderColor": "$color-purple-transparent-300",
+                    "backgroundColor": "$color-purple-transparent-300",
+                    "textColor": "$color-purple-transparent-600",
+                    "iconTintColor": "$color-purple-transparent-600"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Datepicker": {
+      "meta": {
+        "variantGroups": {
+          "size": {
+            "medium": {
+              "default": false
+            },
+            "large": {
+              "default": true
+            }
+          }
+        }
+      },
+      "appearances": {
+        "default": {
+          "mapping": {},
+          "variantGroups": {
+            "status": {
+              "basic": {
+                "borderColor": "#C7C7C7",
+                "backgroundColor": "white"
+              }
+            },
+            "size": {
+              "large": {
+                "borderRadius": 15,
+                "minHeight": 52
+              }
+            }
+          }
+        }
+      }
+    },
+    "Select": {
+      "meta": {
+        "variantGroups": {
+          "size": {
+            "medium": {
+              "default": false
+            },
+            "large": {
+              "default": true
+            }
+          }
+        }
+      },
+      "appearances": {
+        "default": {
+          "mapping": {},
+          "variantGroups": {
+            "status": {
+              "basic": {
+                "borderColor": "#C7C7C7",
+                "backgroundColor": "white"
+              }
+            },
+            "size": {
+              "large": {
+                "borderRadius": 15,
+                "minHeight": 52
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

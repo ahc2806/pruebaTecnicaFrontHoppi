@@ -36,7 +36,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -51,5 +51,17 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>ProximaNova-Black.ttf</string>
+		<string>ProximaNova-Bold.ttf</string>
+		<string>ProximaNova-Extrabold.ttf</string>
+		<string>ProximaNova-Medium.ttf</string>
+		<string>ProximaNova-Regular.ttf</string>
+		<string>ProximaNova-Thin.ttf</string>
+		<string>ProximaNovaAlt-Bold.ttf</string>
+		<string>ProximaNovaAlt-Light.ttf</string>
+		<string>ProximaNovaAlt-Thin.ttf</string>
+	</array>
 </dict>
 </plist>
