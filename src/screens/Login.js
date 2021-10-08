@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Text, Button, Input } from '@ui-kitten/components';
-import { Container } from '../components';
+import { Container, Loading } from '../components';
 import { Colors } from '../utils/colors';
 import { Constants } from '../utils';
 import { useForm } from '../hooks';
@@ -19,9 +19,10 @@ import {
 const LoginScreen = ({ navigation }) => {
   const { textLabel } = styles;
 
-  const { email, password, secureTextEntry, onChange } = useForm({
+  const { email, password, loading, secureTextEntry, onChange } = useForm({
     email: '',
     password: '',
+    loading: false,
     secureTextEntry: true,
   });
 
@@ -35,7 +36,9 @@ const LoginScreen = ({ navigation }) => {
   const handleLogin = async () => {
     if (email !== '' && password !== '') {
       if (Constants.validateEmail(email)) {
+        onChange(true, 'loading');
         const response = await UserService.Login(email, password);
+        onChange(false, 'loading');
 
         if (response.status === 200) {
           await AsyncStorage.setItem('token', response.data.token);
@@ -83,6 +86,8 @@ const LoginScreen = ({ navigation }) => {
       withScroll
       colorBar={Colors.white}
       backgroundColor={Colors.white}>
+      <Loading activeText loading={loading} />
+
       <View style={{ flex: 1, paddingBottom: 50 }}>
         <Text style={{ color: Colors.dark }} category="h2">
           Iniciar sesión

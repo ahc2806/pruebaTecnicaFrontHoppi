@@ -12,7 +12,7 @@ const RegisteredScreen = ({ navigation, route }) => {
 
   const handleLogin = async () => {
     await AsyncStorage.setItem('token', route.params.token);
-    await AsyncStorage.setItem('user', route.params.user);
+    await AsyncStorage.setItem('user', JSON.stringify(route.params.user));
 
     navigation.reset({
       index: 0,
