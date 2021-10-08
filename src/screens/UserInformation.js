@@ -1,16 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Text, Button, Input } from '@ui-kitten/components';
 import { Container } from '../components';
 import { Colors } from '../utils/colors';
 import { Constants } from '../utils';
 import { useForm } from '../hooks';
 import { Icon } from 'react-native-elements';
-import {
-  View,
-  TouchableWithoutFeedback,
-  Keyboard,
-  StyleSheet,
-} from 'react-native';
+import { View, TouchableWithoutFeedback, Keyboard } from 'react-native';
 
 const UserInformationScreen = ({ navigation }) => {
   const { email, password, secureTextEntry, confirmed, phone, onChange } =
@@ -22,6 +17,11 @@ const UserInformationScreen = ({ navigation }) => {
       secureTextEntry: true,
     });
 
+  const [emailError, setEmailError] = useState(undefined);
+  const [passwordError, setPasswordError] = useState(undefined);
+  const [passwordError2, setPasswordError2] = useState(undefined);
+  const [phoneError, setPhoneError] = useState(undefined);
+
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const confirmedRef = useRef(null);
@@ -31,11 +31,69 @@ const UserInformationScreen = ({ navigation }) => {
     onChange(!secureTextEntry, 'secureTextEntry');
   };
 
+  const validateForm = () => {
+    setEmailError(undefined);
+    setPasswordError(undefined);
+    setPasswordError2(undefined);
+    setPhoneError(undefined);
+
+    if (
+      email.trim().length < 1 ||
+      password.trim().length < 1 ||
+      confirmed.trim().length < 1 ||
+      phone.trim().length < 1
+    ) {
+      if (email.trim().length < 1) setEmailError('* Está vacío');
+      if (password.trim().length < 1) setPasswordError('* Está vacío');
+      if (confirmed.trim().length < 1) setPasswordError2('* Está vacío');
+      if (phone.trim().length < 1) setPhoneError('* Está vacío');
+
+      return false;
+    } else {
+      let validarCorreo = false;
+      let validarPassword = false;
+      let validarPhone = false;
+
+      if (!Constants.validateEmail(email)) {
+        setEmailError('El correo ingresado no es válido.');
+      } else {
+        validarCorreo = true;
+      }
+
+      if (phone !== '' && phone.length !== 10) {
+        setPhoneError('El número es incorrecto.');
+      } else {
+        validarPhone = true;
+      }
+
+      if (password !== confirmed) {
+        setPasswordError2('Las contraseñas no coinciden');
+      } else if (password.length < 8) {
+        setPasswordError('La contraseña debe tener mínimo 8 caracteres.');
+      } else {
+        validarPassword = true;
+      }
+
+      if (validarCorreo && validarPassword && validarPhone) {
+        return true;
+      }
+      return false;
+    }
+  };
+
+  const handleUserInformation = () => {
+    if (validateForm()) {
+      navigation.navigate('PersonalInformation', {
+        data: { email, uid: password, hangout: phone },
+      });
+    }
+  };
+
   const renderIcon = props => (
     <TouchableWithoutFeedback onPress={toggleSecureEntry}>
       <Icon
         solid
-        size={20}
+        size={18}
         {...props}
         color={Colors.gray2}
         type="font-awesome-5"
@@ -48,6 +106,7 @@ const UserInformationScreen = ({ navigation }) => {
     <Container
       activeBar
       themeBar="dark"
+      withScroll
       colorBar={Colors.white}
       backgroundColor={Colors.white}>
       <View style={{ flex: 1, paddingBottom: 50 }}>
@@ -63,6 +122,8 @@ const UserInformationScreen = ({ navigation }) => {
           autoCapitalize="none"
           ref={emailRef}
           value={email}
+          caption={emailError}
+          status={emailError ? 'danger' : 'default'}
           keyboardType="email-address"
           returnKeyType="next"
           autoCompleteType="email"
@@ -76,7 +137,9 @@ const UserInformationScreen = ({ navigation }) => {
           label="Contraseña"
           value={password}
           ref={passwordRef}
+          caption={passwordError}
           returnKeyType="next"
+          status={passwordError ? 'danger' : 'default'}
           style={{ marginTop: 20 }}
           accessoryRight={renderIcon}
           secureTextEntry={secureTextEntry}
@@ -89,7 +152,9 @@ const UserInformationScreen = ({ navigation }) => {
           label="Confirmar contraseña"
           value={confirmed}
           ref={confirmedRef}
+          caption={passwordError2}
           returnKeyType="next"
+          status={passwordError2 ? 'danger' : 'default'}
           style={{ marginTop: 20 }}
           accessoryRight={renderIcon}
           secureTextEntry={secureTextEntry}
@@ -102,9 +167,12 @@ const UserInformationScreen = ({ navigation }) => {
           label="Teléfono"
           value={phone}
           ref={phoneRef}
+          status={phoneError ? 'danger' : 'default'}
+          caption={phoneError}
           returnKeyType="done"
           keyboardType="phone-pad"
           style={{ marginTop: 20 }}
+          maxLength={10}
           onChangeText={value => onChange(value, 'phone')}
           onSubmitEditing={() => {
             Keyboard.dismiss();
@@ -113,14 +181,12 @@ const UserInformationScreen = ({ navigation }) => {
 
         <Button
           style={Constants.StylesGlobal.btnContinuar}
-          onPress={() => navigation.navigate('PersonalInformation')}>
+          onPress={handleUserInformation}>
           Continuar
         </Button>
       </View>
     </Container>
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default UserInformationScreen;

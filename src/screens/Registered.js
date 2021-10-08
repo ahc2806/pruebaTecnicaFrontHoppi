@@ -1,15 +1,24 @@
 import React from 'react';
-// import LottieView from 'lottie-react-native';
 import { Container } from '../components';
 import { Colors } from '../utils/colors';
 import { Constants } from '../utils';
-// import { CheckRegister } from '../../../assets/animations';
 import { Icon } from 'react-native-elements';
 import { View } from 'react-native';
 import { Text, Button } from '@ui-kitten/components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const RegisteredScreen = ({ navigation }) => {
+const RegisteredScreen = ({ navigation, route }) => {
   const { header } = Constants.StylesGlobal;
+
+  const handleLogin = async () => {
+    await AsyncStorage.setItem('token', route.params.token);
+    await AsyncStorage.setItem('user', route.params.user);
+
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Dashboard' }],
+    });
+  };
 
   const SignInIcon = () => (
     <Icon
@@ -36,29 +45,16 @@ const RegisteredScreen = ({ navigation }) => {
         <Text
           style={{ color: Colors.gray2, textAlign: 'center' }}
           category="s1">
-          ¡Listo! Ya puedes comenzar a realizar pedidos.
+          ¡Listo! Ya puedes utilizar la aplicación.
         </Text>
-
-        {/* <LottieView
-          style={{ height: '100%', width: '100%' }}
-          source={CheckRegister}
-          autoPlay={true}
-          loop={true}
-          speed={1}
-        /> */}
       </View>
 
       <View style={{ flex: 1 }}>
         <Button
           style={{ marginTop: 50 }}
           accessoryLeft={SignInIcon}
-          status="basic"
-          onPress={() =>
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'Dashboard' }],
-            })
-          }>
+          status="primary"
+          onPress={handleLogin}>
           Iniciar sesión
         </Button>
       </View>

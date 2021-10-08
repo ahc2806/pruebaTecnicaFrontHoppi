@@ -16,8 +16,6 @@ const WelcomeScreen = ({ navigation }) => {
       activeBar
       colorBar={theme['color-primary-default']}
       backgroundColor={theme['color-primary-default']}>
-      <View style={{ flex: 0.2 }} />
-
       <View style={{ ...header, flex: 2, paddingBottom: 50 }}>
         <Text style={{ color: Colors.white }} category="h1">
           Bienvenido
@@ -26,7 +24,7 @@ const WelcomeScreen = ({ navigation }) => {
           Algún mensaje...
         </Text>
         <Image
-          style={{ width: '40%', height: '40%', marginTop: 60 }}
+          style={{ width: '40%', height: '40%', marginTop: 70 }}
           source={LogoBlanco}
           resizeMode="contain"
         />

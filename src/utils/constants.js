@@ -1,7 +1,12 @@
 import { StyleSheet } from 'react-native';
 import { useTheme } from '@ui-kitten/components';
 
-export const Routes = {};
+export const Routes = {
+  users: 'users/',
+  login: 'users/login',
+  validateUser: 'users/validate-user/',
+  hoppis: 'hoppis/',
+};
 
 const theme = useTheme();
 export const StylesGlobal = StyleSheet.create({
@@ -40,18 +45,4 @@ export const validateEmail = email => {
 };
 
 // Arrays
-export const genders = ['Seleccione', 'Hombre', 'Mujer', 'Indistinto'];
-export const suburbs = [
-  'Seleccione',
-  '30 de Abril',
-  'Arboledas',
-  'Concordia',
-  'Cuautémoc Cárdenas',
-  'Cuitláhuac Centro',
-  'El Jovito',
-  'El Polvorón',
-  'Oaxaca',
-  'San Francisco',
-  'San Pedro',
-  'Tepeyac',
-];
+export const genders = ['Seleccione', 'Hombre', 'Mujer'];

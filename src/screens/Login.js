@@ -5,12 +5,15 @@ import { Colors } from '../utils/colors';
 import { Constants } from '../utils';
 import { useForm } from '../hooks';
 import { Icon } from 'react-native-elements';
+import { UserService } from '../services';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from 'react-native';
 
 const LoginScreen = ({ navigation }) => {
@@ -29,6 +32,37 @@ const LoginScreen = ({ navigation }) => {
     onChange(!secureTextEntry, 'secureTextEntry');
   };
 
+  const handleLogin = async () => {
+    if (email !== '' && password !== '') {
+      if (Constants.validateEmail(email)) {
+        const response = await UserService.Login(email, password);
+
+        if (response.status === 200) {
+          await AsyncStorage.setItem('token', response.data.token);
+          await AsyncStorage.setItem(
+            'user',
+            JSON.stringify(response.data.user),
+          );
+
+          Alert.alert('¡Error!', 'Usuario loggueado', [{ text: 'OK' }]);
+
+          // navigation.reset({
+          //   index: 0,
+          //   routes: [{ name: 'Dashboard' }],
+          // });
+        } else {
+          Alert.alert('Error', response.message, [{ text: 'OK' }]);
+        }
+      } else {
+        Alert.alert('Error', 'El correo ingresado no es válido', [
+          { text: 'Ok' },
+        ]);
+      }
+    } else {
+      Alert.alert('Error', 'Datos incompletos', [{ text: 'Ok' }]);
+    }
+  };
+
   const renderIcon = props => (
     <TouchableWithoutFeedback onPress={toggleSecureEntry}>
       <Icon
@@ -42,20 +76,11 @@ const LoginScreen = ({ navigation }) => {
     </TouchableWithoutFeedback>
   );
 
-  const FbIcon = () => (
-    <Icon
-      name="facebook"
-      type="font-awesome-5"
-      color={Colors.white}
-      size={23}
-      solid
-    />
-  );
-
   return (
     <Container
       activeBar
       themeBar="dark"
+      withScroll
       colorBar={Colors.white}
       backgroundColor={Colors.white}>
       <View style={{ flex: 1, paddingBottom: 50 }}>
@@ -94,30 +119,13 @@ const LoginScreen = ({ navigation }) => {
           }}
         />
 
-        <Text style={textLabel} category="s1">
-          ¿Deseas iniciar sesión con Facebook?
-        </Text>
-
-        <Button
-          status="info"
-          style={{ marginTop: 10 }}
-          onPress={() => navigation.navigate('')}
-          accessoryLeft={FbIcon}>
-          Facebook
-        </Button>
-
         <Button
           style={Constants.StylesGlobal.btnContinuar}
-          onPress={() =>
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'Dashboard' }],
-            })
-          }>
+          onPress={handleLogin}>
           Iniciar sesión
         </Button>
 
-        <TouchableOpacity onPress={() => navigation.navigate('')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Welcome')}>
           <Text style={textLabel} category="s2">
             ¿Olvidaste tu contraseña?
           </Text>

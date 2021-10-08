@@ -1,27 +1,16 @@
 import React from 'react';
-// import LottieView from 'lottie-react-native';
 import { Container } from '../components';
 import { Colors } from '../utils/colors';
 import { Constants } from '../utils';
-// import { ChickendPieces } from '../../../assets/animations';
 import { Icon } from 'react-native-elements';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 import { Text, Button } from '@ui-kitten/components';
 import { useTheme } from '@ui-kitten/components';
+import { LogoBlanco } from '../assets/img';
 
 const CreateAccountScreen = ({ navigation }) => {
   const { header } = Constants.StylesGlobal;
   const theme = useTheme();
-
-  const FbIcon = () => (
-    <Icon
-      name="facebook"
-      type="font-awesome-5"
-      color={Colors.white}
-      size={23}
-      solid
-    />
-  );
 
   const EmailIcon = () => (
     <Icon
@@ -38,8 +27,6 @@ const CreateAccountScreen = ({ navigation }) => {
       activeBar
       colorBar={Colors.primary}
       backgroundColor={theme['color-primary-default']}>
-      <View style={{ flex: 0.7 }} />
-
       <View style={{ ...header, flex: 2, paddingBottom: 50 }}>
         <Text style={{ color: Colors.white }} category="h1">
           Crear cuenta
@@ -48,26 +35,18 @@ const CreateAccountScreen = ({ navigation }) => {
           Crea una cuenta en tan sólo 3 pasos
         </Text>
 
-        {/* <LottieView
-          style={{ height: '100%', width: '100%' }}
-          source={ChickendPieces}
-          autoPlay={true}
-          loop={true}
-          speed={1}
-        /> */}
+        <Image
+          style={{ width: '40%', height: '40%', marginTop: 80 }}
+          source={LogoBlanco}
+          resizeMode="contain"
+        />
       </View>
 
-      <View style={{ flex: 1 }}>
-        <Button
-          status="info"
-          onPress={() => navigation.navigate('')}
-          accessoryLeft={FbIcon}>
-          Facebook
-        </Button>
+      <View style={{ flex: 0.9 }}>
         <Button
           style={{ marginTop: 20 }}
+          status="warning"
           accessoryLeft={EmailIcon}
-          status="basic"
           onPress={() => navigation.navigate('UserInformation')}>
           Usando correo
         </Button>

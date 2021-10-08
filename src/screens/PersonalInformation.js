@@ -1,9 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Container } from '../components';
 import { Colors } from '../utils/colors';
 import { Constants } from '../utils';
 import { useForm } from '../hooks';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
+import { Countries } from '../utils';
 import {
   Text,
   Button,
@@ -14,33 +15,85 @@ import {
   IndexPath,
 } from '@ui-kitten/components';
 
-const UserInformationScreen = ({ navigation }) => {
-  const { colRowLeft, colRowRight } = Constants.StylesGlobal;
+const UserInformationScreen = ({ navigation, route }) => {
+  const { colRowLeft, colRowRight, btnContinuar } = Constants.StylesGlobal;
 
   const {
     name,
     surnameFather,
-    surnameMother,
     birthday,
     genderIndex,
+    bio,
+    countryIndex,
     onChange,
   } = useForm({
     name: '',
     surnameFather: '',
-    surnameMother: '',
     birthday: '',
+    bio: '',
+    countryIndex: new IndexPath(0),
     genderIndex: new IndexPath(0),
   });
 
   const gender = Constants.genders[genderIndex.row];
+  const country = Countries.map(item => item.name)[countryIndex.row];
+
   let fechaMax = new Date(); // Fecha mínima para registro
   fechaMax.setMonth(fechaMax.getMonth() - 144);
 
   const nameRef = useRef();
   const surnameFatherRef = useRef();
-  const surnameMotherRef = useRef();
   const birthdayRef = useRef();
   const genderRef = useRef();
+  const bioRef = useRef();
+  const countryRef = useRef();
+
+  const [nameError, setNameError] = useState(undefined);
+  const [surnameError, setSurnameError] = useState(undefined);
+  const [dateError, setDateError] = useState(undefined);
+  const [genderError, setGenderError] = useState(undefined);
+  const [countryError, setCountryError] = useState(undefined);
+
+  const validateForm = () => {
+    setNameError(undefined);
+    setSurnameError(undefined);
+    setDateError(undefined);
+    setGenderError(undefined);
+    setCountryError(undefined);
+
+    if (
+      name.trim().length < 1 ||
+      surnameFather.trim().length < 1 ||
+      birthday.length < 1 ||
+      genderIndex.row < 1 ||
+      countryIndex.row < 1
+    ) {
+      if (name.trim().length < 1) setNameError('* Está vacío');
+      if (surnameFather.trim().length < 1) setSurnameError('* Está vacío');
+      if (birthday.length < 1) setDateError('* Fecha no válida');
+      if (genderIndex.row < 1) setGenderError('* Sin elegir');
+      if (countryIndex.row < 1) setCountryError('* Sin elegir');
+    } else {
+      return true;
+    }
+    return false;
+  };
+
+  const handlePersonalInformation = () => {
+    if (validateForm()) {
+      navigation.navigate('CreateUser', {
+        data: {
+          ...route.params.data,
+          name: name.trim(),
+          lastName: surnameFather.trim(),
+          bday: new Date(birthday),
+          gender: genderIndex.row - 1,
+          country,
+          bio,
+        },
+      });
+    }
+  };
 
   return (
     <Container
@@ -61,6 +114,8 @@ const UserInformationScreen = ({ navigation }) => {
           label="Nombre(s)"
           ref={nameRef}
           value={name}
+          caption={nameError}
+          status={nameError ? 'danger' : 'default'}
           returnKeyType="next"
           style={{ marginTop: 50 }}
           onChangeText={value => onChange(value, 'name')}
@@ -69,23 +124,26 @@ const UserInformationScreen = ({ navigation }) => {
           }}
         />
         <Input
-          label="Apellido paterno"
+          label="Apellidos"
           value={surnameFather}
           ref={surnameFatherRef}
           returnKeyType="next"
           style={{ marginTop: 20 }}
+          caption={surnameError}
+          status={surnameError ? 'danger' : 'default'}
           onChangeText={value => onChange(value, 'surnameFather')}
           onSubmitEditing={() => {
-            Constants.focusTextInput(surnameMotherRef);
+            Constants.focusTextInput(bioRef);
           }}
         />
         <Input
-          label="Apellido materno"
-          value={surnameMother}
-          ref={surnameMotherRef}
+          label="Sobre ti"
+          value={bio}
+          ref={bioRef}
+          multiline
           returnKeyType="next"
           style={{ marginTop: 20 }}
-          onChangeText={value => onChange(value, 'surnameMother')}
+          onChangeText={value => onChange(value, 'bio')}
           onSubmitEditing={() => {
             Constants.focusTextInput(birthdayRef);
           }}
@@ -99,6 +157,8 @@ const UserInformationScreen = ({ navigation }) => {
               ref={birthdayRef}
               autoDismiss={true}
               min={new Date('1950-08-10')}
+              caption={dateError}
+              status={dateError ? 'danger' : 'default'}
               onSelect={value => {
                 onChange(value, 'birthday');
                 Constants.focusTextInput(genderRef);
@@ -111,6 +171,8 @@ const UserInformationScreen = ({ navigation }) => {
               value={gender}
               label="Género"
               ref={genderRef}
+              caption={genderError}
+              status={genderError ? 'danger' : 'default'}
               onSelect={value => onChange(value, 'genderIndex')}>
               {Constants.genders.map((item, i) => (
                 <SelectItem title={item} key={i + item} disabled={i < 1} />
@@ -119,16 +181,26 @@ const UserInformationScreen = ({ navigation }) => {
           </View>
         </View>
 
-        <Button
-          style={Constants.StylesGlobal.btnContinuar}
-          onPress={() => navigation.navigate('Address')}>
+        <Select
+          selectedIndex={countryIndex}
+          value={country}
+          label="País"
+          ref={countryRef}
+          caption={countryError}
+          style={{ marginTop: 20 }}
+          status={countryError ? 'danger' : 'default'}
+          onSelect={value => onChange(value, 'countryIndex')}>
+          {Countries.map((item, i) => (
+            <SelectItem title={item.name} key={i + item} disabled={i < 1} />
+          ))}
+        </Select>
+
+        <Button style={btnContinuar} onPress={handlePersonalInformation}>
           Continuar
         </Button>
       </View>
     </Container>
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default UserInformationScreen;

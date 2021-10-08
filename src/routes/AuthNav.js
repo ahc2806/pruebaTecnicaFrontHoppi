@@ -1,13 +1,13 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
-  AddressScreen,
   CreateAccountScreen,
   LoginScreen,
   PersonalInformationScreen,
   RegisteredScreen,
   UserInformationScreen,
   WelcomeScreen,
+  CreateUserScreen,
 } from '../screens';
 import { Colors } from '../utils/colors';
 import { Text } from '@ui-kitten/components';
@@ -18,10 +18,21 @@ const Navigation = () => {
   return (
     <Navigator headerMode="screen" initialRouteName="Welcome">
       <Screen
-        name="Address"
-        component={AddressScreen}
+        name="CreateAccount"
+        component={CreateAccountScreen}
         options={{
           title: '',
+          headerTransparent: true,
+          headerShadowVisible: false,
+          headerTintColor: Colors.white,
+        }}
+      />
+      <Screen
+        name="CreateUser"
+        component={CreateUserScreen}
+        options={{
+          title: '',
+          headerShadowVisible: false,
           headerRight: () => (
             <Text category="s1" style={{ marginRight: 20 }}>
               3/3
@@ -31,20 +42,12 @@ const Navigation = () => {
         }}
       />
       <Screen
-        name="CreateAccount"
-        component={CreateAccountScreen}
-        options={{
-          title: '',
-          headerTransparent: true,
-          headerTintColor: Colors.white,
-        }}
-      />
-      <Screen
         name="Login"
         component={LoginScreen}
         options={{
           title: '',
           headerTintColor: Colors.dark,
+          headerShadowVisible: false,
         }}
       />
       <Screen
@@ -52,6 +55,7 @@ const Navigation = () => {
         component={PersonalInformationScreen}
         options={{
           title: '',
+          headerShadowVisible: false,
           headerRight: () => (
             <Text category="s1" style={{ marginRight: 20 }}>
               2/3
@@ -70,6 +74,7 @@ const Navigation = () => {
         component={UserInformationScreen}
         options={{
           title: '',
+          headerShadowVisible: false,
           headerRight: () => (
             <Text category="s1" style={{ marginRight: 20 }}>
               1/3
