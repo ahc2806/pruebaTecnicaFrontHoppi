@@ -15,9 +15,17 @@ const App = () => {
   const [token, setToken] = useState(null);
 
   useEffect(() => {
-    const tokenAsync = async () => await AsyncStorage.getItem('token');
-    setToken(tokenAsync());
-  }, []);
+    async function fetchData() {
+      try {
+        const tok = await AsyncStorage.getItem('@token');
+        setToken(tok);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchData();
+  }, [token]);
 
   return (
     <SafeAreaProvider>

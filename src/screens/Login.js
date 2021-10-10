@@ -41,18 +41,16 @@ const LoginScreen = ({ navigation }) => {
         onChange(false, 'loading');
 
         if (response.status === 200) {
-          await AsyncStorage.setItem('token', response.data.token);
+          await AsyncStorage.setItem('@token', response.data.token);
           await AsyncStorage.setItem(
-            'user',
+            '@user',
             JSON.stringify(response.data.user),
           );
 
-          Alert.alert('¡Error!', 'Usuario loggueado', [{ text: 'OK' }]);
-
-          // navigation.reset({
-          //   index: 0,
-          //   routes: [{ name: 'Dashboard' }],
-          // });
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'Dashboard' }],
+          });
         } else {
           Alert.alert('Error', response.message, [{ text: 'OK' }]);
         }
